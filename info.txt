@@ -1,0 +1,20 @@
+Weight: 77
+Height: 184
+Age: 40
+Gender: Male
+
+WorkoutDays: 0
+
+ProteinFactor: 2
+FatFactor: 1
+CarbFactor: 2.5
+
+CalorieAdjustment: 500
+
+
+
+#FastingCalorieDiminishingPercent: 0
+#PAL: 1.55
+#FatNeedPercentageFromCalories: 28
+#CarbohydratePercentageFromCalories: 25
+#FastingHours: 0
