@@ -66,6 +66,7 @@ def calculate_recommended_values_v2(info):
     height = info['Height']
     age = info['Age']
     gender = info['Gender']
+    AdaptiveThermogenesis = info.get('AdaptiveThermogenesis', 0)
     workout_days = info.get('WorkoutDays', 0)
     workoutDifficulty = info.get('WorkoutDifficulty', 1)
     fasting_hours = info.get('FastingHours', 0)  # Default to 0 if not provided
@@ -75,12 +76,18 @@ def calculate_recommended_values_v2(info):
         bmr = 10 * weight + 6.25 * height - 5 * age + 5
     else:
         bmr = 10 * weight + 6.25 * height - 5 * age - 161
-
+        
+    # Adjusting for adaptive thermogenesis
+    bmr -= AdaptiveThermogenesis * 0.1 * bmr
+    
     # Check if PAL is provided, otherwise calculate based on workout days
     pal = info.get('PAL')
     if pal is None:
         pal = 1.2 + (workout_days * 0.1 * workoutDifficulty)
 
+    # Adjusting for adaptive thermogenesis
+    pal -= 0.08 * pal * AdaptiveThermogenesis
+    
     daily_calories = bmr * pal
 
     # Check if FastingCalorieDiminishingPercent is provided, otherwise use the fasting_hours calculation

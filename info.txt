@@ -1,4 +1,4 @@
-Weight: 77
+Weight: 75
 Height: 184
 Age: 40
 Gender: Male
@@ -9,11 +9,11 @@ WorkoutDifficulty: 0.8
 
 ProteinFactor: 2
 FatFactor: 1
-CarbFactor: 2.5
+CarbFactor: 2
 
-CalorieAdjustment: 500
+CalorieAdjustment: 0
 
-
+AdaptiveThermogenesis: 1
 
 #FastingCalorieDiminishingPercent: 0
 #PAL: 1.55
