@@ -3,7 +3,9 @@ Height: 184
 Age: 40
 Gender: Male
 
-WorkoutDays: 0
+WorkoutDays: 6
+
+WorkoutDifficulty: 0.8
 
 ProteinFactor: 2
 FatFactor: 1

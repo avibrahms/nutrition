@@ -66,7 +66,8 @@ def calculate_recommended_values_v2(info):
     height = info['Height']
     age = info['Age']
     gender = info['Gender']
-    workout_days = info['WorkoutDays']
+    workout_days = info.get('WorkoutDays', 0)
+    workoutDifficulty = info.get('WorkoutDifficulty', 1)
     fasting_hours = info.get('FastingHours', 0)  # Default to 0 if not provided
 
     # Using the Mifflin-St Jeor equation for BMR calculation
@@ -78,7 +79,7 @@ def calculate_recommended_values_v2(info):
     # Check if PAL is provided, otherwise calculate based on workout days
     pal = info.get('PAL')
     if pal is None:
-        pal = 1.2 + (workout_days * 0.1)
+        pal = 1.2 + (workout_days * 0.1 * workoutDifficulty)
 
     daily_calories = bmr * pal
 
@@ -89,7 +90,7 @@ def calculate_recommended_values_v2(info):
     else:
         daily_calories -= fasting_hours * 10  # Adjusting for fasting
         
-    daily_calories -= info.get('CalorieAdjustment', 500)
+    daily_calories -= info.get('CalorieAdjustment', 0)
 
     # Protein (using the provided factor, or defaulting to 1.8 if not provided)
     protein_factor = info.get('ProteinFactor', 1.8)
