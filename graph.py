@@ -20,24 +20,24 @@ def set_x_labels(ax, dates):
 
 
 
-def plot_individual_chart(nutrient, recommended_nutrient, title, filename, color1, dates):
+def plot_individual_chart(nutrient, recommended_nutrient, average_nutrient, title, filename, color1, dates):
     plt.figure(figsize=(10, 6), dpi=300)
-    plot_chart(plt.gca(), nutrient, recommended_nutrient, title, color1, dates, individual=True)
+    plot_chart(plt.gca(), nutrient, recommended_nutrient, average_nutrient, title, color1, dates, individual=True)
     plt.tight_layout()
     plt.savefig(filename, facecolor='#121212')
     plt.close()
 
-import seaborn as sns
 
 def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, color1, dates, individual=False):
     # Plot actual nutrient
     sns.lineplot(x='Days', y=nutrient, data=df, label=nutrient, linewidth=2.5, color=color1, ax=ax)
-    
+    print(df[average_nutrient][0])
     # Plot recommended nutrient
     sns.lineplot(x='Days', y=recommended_nutrient, data=df, label=recommended_nutrient, linestyle='dashed', linewidth=2.5, color=color1, ax=ax)
     
     # Plot average nutrient
-    sns.lineplot(x='Days', y=average_nutrient, data=df, label=average_nutrient, linestyle='dotted', linewidth=2.5, color=color1, ax=ax)
+    if df[average_nutrient][0]:
+        sns.lineplot(x='Days', y=average_nutrient, data=df, label=average_nutrient, linestyle='dotted', linewidth=2.5, color=color1, ax=ax)
     
     # Axis and title settings
     ax.set_title(title, color=color1, pad=20)
@@ -51,14 +51,19 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
     ax.set_ylim(0, y_max * space_above)
     
     # Legend settings
-    legend = ax.legend(loc='upper left', fontsize=13)
-    for i, text in enumerate([nutrient, recommended_nutrient, average_nutrient]):
-        legend.texts[i].set_text(text)
-        legend.texts[i].set_color(color1)
+    if df[average_nutrient][0]:
+        legend = ax.legend(loc='upper left', fontsize=13)
+        for i, text in enumerate([nutrient, recommended_nutrient, average_nutrient]):
+            legend.texts[i].set_text(text)
+            legend.texts[i].set_color(color1)
+    else:
+        legend = ax.legend(loc='upper left', fontsize=13)
+        for i, text in enumerate([nutrient, recommended_nutrient]):
+            legend.texts[i].set_text(text)
+            legend.texts[i].set_color(color1)
 
     # Custom function to set x-axis labels (assuming this function exists)
     set_x_labels(ax, dates)
-
 
     # Add y-label for the recommended value
     recommended_value = int(round(df[recommended_nutrient].iloc[0]))
@@ -73,9 +78,10 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
     value = int(round(df[nutrient].iloc[-1]))
     ax.text(1.01, value, f'{value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=16, weight='bold')
     
-     # Add y-label for the average value
-    average_value = int(round(df[average_nutrient].iloc[-1]))
-    ax.text(0.05, average_value, f'{average_value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=10, weight='bold', bbox=dict(facecolor='black', edgecolor=color1, boxstyle='round,pad=0.2'))
+    if df[average_nutrient][0]:
+        # Add y-label for the average value
+        average_value = int(round(df[average_nutrient].iloc[-1]))
+        ax.text(0.05, average_value, f'{average_value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=10, weight='bold', bbox=dict(facecolor='black', edgecolor=color1, boxstyle='round,pad=0.2'))
 
 
 
@@ -99,7 +105,9 @@ def graph(info, df):
     df['Average Carbs'] = [recommended_carbs*average_carbs] * num_days
     df['Average Calories'] = [recommended_calories*average_calories] * num_days
     
-
+    if not info['AverageValues']:
+        df['Average Proteins'] = df['Average Fats'] = df['Average Carbs'] = df['Average Calories'] = 0
+    
     sns.set_theme(style="darkgrid")
     sns.set_context("notebook", font_scale=1.5)
     plt.rcParams['axes.facecolor'] = '#121212'
