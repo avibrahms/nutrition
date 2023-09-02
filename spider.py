@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from utils import calculate_recommended_values_v2
+from utils import calculate_recommended_values_v2, calculate_averages
 
 def spider(info, data):
     
@@ -29,15 +29,12 @@ def spider(info, data):
     # Calculate recommended daily intake for each nutrient
     recommended_protein, recommended_fat, recommended_carbs, recommended_calories = calculate_recommended_values_v2(info)
 
-
     # Calculate the average intake and divide by the recommended value
-    average_protein = data['Proteins'][n:m].mean() / recommended_protein
-    average_fat = data['Fats'][n:m].mean() / recommended_fat
-    average_carbs = data['Carbs'][n:m].mean() / recommended_carbs
-    average_calories = data['Calories'][n:m].mean() / recommended_calories
+    average_protein, average_fat, average_carbs, average_calories = calculate_averages(data, recommended_protein, recommended_fat, recommended_carbs, recommended_calories, n, m)
 
     # The data to plot
     data_to_plot = [average_protein, average_fat, average_carbs, average_calories]
+    data_to_plot_numbers = [average_protein*recommended_protein, average_fat*recommended_fat, average_carbs*recommended_carbs, average_calories*recommended_calories]
 
     # Number of variables we're plotting
     num_vars = len(data_to_plot)
@@ -108,8 +105,8 @@ def spider(info, data):
     ax.yaxis.set_ticklabels([])
 
     # Add percentages for each nutrient
-    for angle, value, label in zip(angles, data_to_plot, labels):
-        ax.text(angle, value, f'{int(value * 100)}%', ha='center', va='bottom', color=colors[labels.index(label)], fontsize=14, weight='bold')
+    for angle, value, value_number, label in zip(angles, data_to_plot, data_to_plot_numbers, labels):
+        ax.text(angle, value, f'({int(round(value_number))}{"g"*int(label!="Calories")})\n{int(value * 100)}%', ha='center', va='bottom', color=colors[labels.index(label)], fontsize=14, weight='bold')
 
     # Set facecolor and title color
     ax.set_facecolor('black')

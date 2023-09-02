@@ -4,7 +4,7 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
-from utils import calculate_recommended_values_v2
+from utils import calculate_recommended_values_v2, calculate_averages
 
 def set_x_labels(ax, dates):
     num_days = len(dates)
@@ -27,22 +27,38 @@ def plot_individual_chart(nutrient, recommended_nutrient, title, filename, color
     plt.savefig(filename, facecolor='#121212')
     plt.close()
 
-def plot_chart(df, ax, nutrient, recommended_nutrient, title, color1, dates, individual=False):
+import seaborn as sns
+
+def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, color1, dates, individual=False):
+    # Plot actual nutrient
     sns.lineplot(x='Days', y=nutrient, data=df, label=nutrient, linewidth=2.5, color=color1, ax=ax)
+    
+    # Plot recommended nutrient
     sns.lineplot(x='Days', y=recommended_nutrient, data=df, label=recommended_nutrient, linestyle='dashed', linewidth=2.5, color=color1, ax=ax)
+    
+    # Plot average nutrient
+    sns.lineplot(x='Days', y=average_nutrient, data=df, label=average_nutrient, linestyle='dotted', linewidth=2.5, color=color1, ax=ax)
+    
+    # Axis and title settings
     ax.set_title(title, color=color1, pad=20)
     ax.set_ylabel('Grams', color=color1)
     ax.set_xlabel('Days', color=color1)
     ax.tick_params(colors=color1)
-    y_max = max(df[nutrient].max(), df[recommended_nutrient].max())
-    space_above = 1.3 if individual else 1.45
+    
+    # Y-axis limits
+    y_max = max(df[nutrient].max(), df[recommended_nutrient].max(), df[average_nutrient].max())
+    space_above = 1.15 if individual else 1.3
     ax.set_ylim(0, y_max * space_above)
-    legend = ax.legend(loc='upper left', fontsize='small')
-    legend.texts[0].set_text(nutrient)
-    legend.texts[0].set_color(color1)
-    legend.texts[1].set_text(recommended_nutrient)
-    legend.texts[1].set_color(color1)
+    
+    # Legend settings
+    legend = ax.legend(loc='upper left', fontsize=13)
+    for i, text in enumerate([nutrient, recommended_nutrient, average_nutrient]):
+        legend.texts[i].set_text(text)
+        legend.texts[i].set_color(color1)
+
+    # Custom function to set x-axis labels (assuming this function exists)
     set_x_labels(ax, dates)
+
 
     # Add y-label for the recommended value
     recommended_value = int(round(df[recommended_nutrient].iloc[0]))
@@ -56,6 +72,10 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, title, color1, dates, ind
     # Add y-label for the nutrient value
     value = int(round(df[nutrient].iloc[-1]))
     ax.text(1.01, value, f'{value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=16, weight='bold')
+    
+     # Add y-label for the average value
+    average_value = int(round(df[average_nutrient].iloc[-1]))
+    ax.text(0.05, average_value, f'{average_value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=10, weight='bold', bbox=dict(facecolor='black', edgecolor=color1, boxstyle='round,pad=0.2'))
 
 
 
@@ -65,11 +85,20 @@ def graph(info, df):
     df['Days'] = pd.to_datetime(df['Days'])
 
     recommended_proteins, recommended_fats, recommended_carbs, recommended_calories = calculate_recommended_values_v2(info)
+    
+    # Calculate the average intake and divide by the recommended value
+    average_proteins, average_fats, average_carbs, average_calories = calculate_averages(df, recommended_proteins, recommended_fats, recommended_carbs, recommended_calories)
+    
     num_days = len(df)
     df['Recommended Proteins'] = [recommended_proteins] * num_days
     df['Recommended Fats'] = [recommended_fats] * num_days
     df['Recommended Carbs'] = [recommended_carbs] * num_days
     df['Recommended Calories'] = [recommended_calories] * num_days
+    df['Average Proteins'] = [recommended_proteins*average_proteins] * num_days
+    df['Average Fats'] = [recommended_fats*average_fats] * num_days
+    df['Average Carbs'] = [recommended_carbs*average_carbs] * num_days
+    df['Average Calories'] = [recommended_calories*average_calories] * num_days
+    
 
     sns.set_theme(style="darkgrid")
     sns.set_context("notebook", font_scale=1.5)
@@ -80,10 +109,10 @@ def graph(info, df):
     dates = df['Days'].dt.to_pydatetime()
 
     fig, axes = plt.subplots(2, 2, figsize=(16, 9), dpi=300)
-    plot_chart(df, axes[0, 0], 'Proteins', 'Recommended Proteins', r'$\bf{Protein}$' + f' Intake Over {num_days} Days', 'skyblue', dates)
-    plot_chart(df, axes[0, 1], 'Fats', 'Recommended Fats', r'$\bf{Fat}$' + f' Intake Over {num_days} Days', 'salmon', dates)
-    plot_chart(df, axes[1, 0], 'Carbs', 'Recommended Carbs', r'$\bf{Carb}$' + f' Intake Over {num_days} Days', 'limegreen', dates)
-    plot_chart(df, axes[1, 1], 'Calories', 'Recommended Calories', r'$\bf{Calorie}$' + f' Intake Over {num_days} Days', 'gold', dates)
+    plot_chart(df, axes[0, 0], 'Proteins', 'Recommended Proteins', 'Average Proteins', r'$\bf{Protein}$' + f' Intake Over {num_days} Days', 'skyblue', dates)
+    plot_chart(df, axes[0, 1], 'Fats', 'Recommended Fats', 'Average Fats', r'$\bf{Fat}$' + f' Intake Over {num_days} Days', 'salmon', dates)
+    plot_chart(df, axes[1, 0], 'Carbs', 'Recommended Carbs', 'Average Carbs', r'$\bf{Carb}$' + f' Intake Over {num_days} Days', 'limegreen', dates)
+    plot_chart(df, axes[1, 1], 'Calories', 'Recommended Calories', 'Average Calories', r'$\bf{Calorie}$' + f' Intake Over {num_days} Days', 'gold', dates)
 
 
     plt.tight_layout()

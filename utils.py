@@ -1,5 +1,12 @@
 import pandas as pd
 
+
+def calculate_averages(data, recommended_protein, recommended_fat, recommended_carbs, recommended_calories, n=None, m=None):
+    average_protein = data['Proteins'][n:m].mean() / recommended_protein
+    average_fat = data['Fats'][n:m].mean() / recommended_fat
+    average_carbs = data['Carbs'][n:m].mean() / recommended_carbs
+    average_calories = data['Calories'][n:m].mean() / recommended_calories
+    return average_protein, average_fat, average_carbs, average_calories
 def read_nutrients(file_path):
     df = pd.read_csv(file_path)
     return df

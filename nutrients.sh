@@ -7,6 +7,6 @@ python3 "/Users/avi/Documents/personal code/nutrients/draw.py"
 pkill Preview
 
 # Display the images
+# open "/Users/avi/Documents/personal code/nutrients/nutrient_charts.png"
 open "/Users/avi/Documents/personal code/nutrients/spider_charts.png"
-open "/Users/avi/Documents/personal code/nutrients/nutrient_charts.png"
 open "/Users/avi/Documents/personal code/nutrients/nutrients.png"
