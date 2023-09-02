@@ -22,4 +22,4 @@ AdaptiveThermogenesis: 1
 #FastingHours: 0
 
 LastDaysAverage: 0
-AverageValues: 1
+AverageValues: 0

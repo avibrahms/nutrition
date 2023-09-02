@@ -45,23 +45,22 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
     ax.set_xlabel('Days', color=color1)
     ax.tick_params(colors=color1)
     
-    # Y-axis limits
-    y_max = max(df[nutrient].max(), df[recommended_nutrient].max(), df[average_nutrient].max())
-    space_above = 1.15 if individual else 1.3
-    ax.set_ylim(0, y_max * space_above)
     
     # Legend settings
     if df[average_nutrient][0]:
-        legend = ax.legend(loc='upper left', fontsize=13)
-        for i, text in enumerate([nutrient, recommended_nutrient, average_nutrient]):
-            legend.texts[i].set_text(text)
-            legend.texts[i].set_color(color1)
+        space_above = 1.15 if individual else 1.3
+        values_to_display = [nutrient, recommended_nutrient, average_nutrient]
     else:
-        legend = ax.legend(loc='upper left', fontsize=13)
-        for i, text in enumerate([nutrient, recommended_nutrient]):
-            legend.texts[i].set_text(text)
-            legend.texts[i].set_color(color1)
+        space_above = 1.3 if individual else 1.45
+        values_to_display = [nutrient, recommended_nutrient]
+        
+    legend = ax.legend(loc='upper left', fontsize=13)
+    y_max = max(df[nutrient].max(), df[recommended_nutrient].max(), df[average_nutrient].max())
+    for i, text in enumerate(values_to_display):
+        legend.texts[i].set_text(text)
+        legend.texts[i].set_color(color1)
 
+    ax.set_ylim(0, y_max * space_above)
     # Custom function to set x-axis labels (assuming this function exists)
     set_x_labels(ax, dates)
 
