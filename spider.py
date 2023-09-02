@@ -4,16 +4,37 @@ import numpy as np
 from utils import calculate_recommended_values_v2
 
 def spider(info, data):
-
+    
+    days = int(info.get('LastDaysAverage', 0))
+    if len(data) > 1:
+        if days <= 0:
+            n = None
+            m = None
+        elif days == 1:
+            n = -1
+            m = None
+        elif days > 1 and days < len(data):
+            n = -days - 1
+            m = -1
+        elif days >= len(data):
+            n = None
+            m = -1
+    elif len(data) <= 1:
+        n = None
+        m = None
+    
+    print(n)
+    print(m)
+    
     # Calculate recommended daily intake for each nutrient
     recommended_protein, recommended_fat, recommended_carbs, recommended_calories = calculate_recommended_values_v2(info)
 
 
     # Calculate the average intake and divide by the recommended value
-    average_protein = data['Proteins'][:-1].mean() / recommended_protein
-    average_fat = data['Fats'][:-1].mean() / recommended_fat
-    average_carbs = data['Carbs'][:-1].mean() / recommended_carbs
-    average_calories = data['Calories'][:-1].mean() / recommended_calories
+    average_protein = data['Proteins'][n:m].mean() / recommended_protein
+    average_fat = data['Fats'][n:m].mean() / recommended_fat
+    average_carbs = data['Carbs'][n:m].mean() / recommended_carbs
+    average_calories = data['Calories'][n:m].mean() / recommended_calories
 
     # The data to plot
     data_to_plot = [average_protein, average_fat, average_carbs, average_calories]
