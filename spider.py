@@ -105,7 +105,7 @@ def spider(info, data):
     ax.yaxis.set_ticklabels([])
 
     # Add percentages for each nutrient
-    if not info['AverageValues']:
+    if info['AverageValues']:
         for angle, value, value_number, label in zip(angles, data_to_plot, data_to_plot_numbers, labels):
             ax.text(angle, value, f'{int(value * 100)}%\n({int(round(value_number))}{"g"*int(label!="Calories")})', ha='center', va='bottom', color=colors[labels.index(label)], fontsize=14, weight='bold')
     else:

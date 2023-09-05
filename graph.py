@@ -10,10 +10,12 @@ def set_x_labels(ax, dates):
     num_days = len(dates)
     if num_days <= 7:
         ax.set_xticks(dates)
-    elif num_days <= 60:
+    elif num_days <= 30:
         ax.set_xticks([dates[-1]] + [dates[-1 - i * 7] for i in range(1, num_days // 7 + 1) if (i * 7) < num_days])
+    elif num_days <= 125:
+        ax.set_xticks([dates[-1]] + [dates[-1 - i * 30] for i in range(1, num_days // 30 + 1) if (i * 30) < num_days])
     elif num_days <= 365:
-        ax.set_xticks([dates[-1]] + [dates[-1 - i * 60] for i in range(1, num_days // 60 + 1) if (i * 60) < num_days])
+        ax.set_xticks([dates[-1]] + [dates[-1 - i * 90] for i in range(1, num_days // 90 + 1) if (i * 90) < num_days])
     else:
         ax.set_xticks([dates[-1]] + [dates[-1 - i * 365] for i in range(1, num_days // 365 + 1) if (i * 365) < num_days])
     ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
