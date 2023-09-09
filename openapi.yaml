@@ -1,0 +1,54 @@
+openapi: "3.0.0"
+info:
+  title: "Avi's macronutrients monitoring"
+  description: "Stores and displays the macronutrients consumed every day since inception."
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:5000"
+paths:
+  /addNutrients:
+    post:
+      summary: "Add nutrients data"
+      parameters:
+        - name: "csv_line"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: "Successfully added data."
+
+  /generateGraph:
+    get:
+      summary: "Generate graph"
+      responses:
+        '200':
+          description: "Successfully generated graph."
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  graph_url:
+                    type: "string"
+
+  /addAndGenerate:
+    post:
+      summary: "Add nutrients data and generate graph"
+      parameters:
+        - name: "csv_line"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: "Successfully added data and generated graph."
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  graph_url:
+                    type: "string"

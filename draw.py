@@ -1,5 +1,5 @@
 from utils import read_nutrients, read_personal_info
-from chart import chart
+# from chart import chart
 from spider import spider
 from graph import graph
 
