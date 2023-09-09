@@ -1,5 +1,59 @@
+import pyperclip
 import pandas as pd
+import csv
+import re
+import os
 
+def verify_csv_line(clipboard_content):
+    # Verify the format "date,int/float,int/float,int/float,int/float"
+    pattern = r"^\d{4}-\d{2}-\d{2},-?\d+(\.\d+)?,-?\d+(\.\d+)?,-?\d+(\.\d+)?,-?\d+(\.\d+)?$"
+    return re.match(pattern, clipboard_content)
+
+def process_csv_from_clipboard(csv_file_path):
+    # 1. Take what is on the clipboard
+    clipboard_content = pyperclip.paste()
+    print('Clipboard content:', clipboard_content)
+
+    # 2. Verify the clipboard content
+    if not verify_csv_line(clipboard_content):
+        print("Clipboard content is not in the required CSV format.")
+        return
+    
+    # 3. Open the CSV file
+    if not os.path.exists(csv_file_path):
+        print("CSV file does not exist.")
+        return
+
+    # Read all lines from the CSV
+    with open(csv_file_path, 'r') as f:
+        lines = list(csv.reader(f))
+
+    # Remove empty or header lines from the end
+    while lines and not lines[-1]:
+        lines.pop()
+
+    # 4. Check the last line's first column (date)
+    last_line = lines[-1]
+    last_date = last_line[0]
+    clipboard_list = clean_elements(clipboard_content.split(','))
+    print('Clipboard list:', clipboard_list)
+    clipboard_date = clipboard_list[0]
+
+    # 5 & 6. Replace or append the line
+    if last_date == clipboard_date:
+        lines[-1] = clipboard_list
+    else:
+        lines.append(clipboard_list)
+
+    # Write back to the CSV
+    with open(csv_file_path, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(lines)
+        # close the file
+        f.close()
+
+def clean_elements(clipboard_list):
+    return [re.sub(r'[^0-9\-,.]', '', element) for element in clipboard_list]
 
 def calculate_averages(data, recommended_protein, recommended_fat, recommended_carbs, recommended_calories, n=None, m=None):
     average_protein = data['Proteins'][n:m].mean() / recommended_protein
@@ -7,7 +61,9 @@ def calculate_averages(data, recommended_protein, recommended_fat, recommended_c
     average_carbs = data['Carbs'][n:m].mean() / recommended_carbs
     average_calories = data['Calories'][n:m].mean() / recommended_calories
     return average_protein, average_fat, average_carbs, average_calories
-def read_nutrients(file_path):
+
+def read_nutrients(file_path): 
+    process_csv_from_clipboard(file_path)
     df = pd.read_csv(file_path)
     return df
 

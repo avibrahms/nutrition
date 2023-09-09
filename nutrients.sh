@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Install packages if they're not installed
+# export PATH=$PATH:/Users/avi/Library/Python/3.9/bin
+# curl https://bootstrap.pypa.io/get-pip.py | python3
+# pip install pyperclip
+
+# python3 "/Users/avi/Documents/personal code/nutrients/install.py"
+# pip install -r "/Users/avi/Documents/personal code/nutrients/requirements.txt"
 # Run the Python script
 python3 "/Users/avi/Documents/personal code/nutrients/draw.py"
 

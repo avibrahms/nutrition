@@ -1,4 +1,3 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from utils import calculate_recommended_values_v2, calculate_averages
@@ -23,8 +22,8 @@ def spider(info, data):
         n = None
         m = None
     
-    print(n)
-    print(m)
+    # print(n)
+    # print(m)
     
     # Calculate recommended daily intake for each nutrient
     recommended_protein, recommended_fat, recommended_carbs, recommended_calories = calculate_recommended_values_v2(info)
@@ -73,7 +72,7 @@ def spider(info, data):
     ax.set_theta_direction(-1)
 
     # Draw axis lines for each angle and label.
-    labels = ['Protein', 'Fat', 'Carbs', 'Calories']
+    labels = ['Proteins', 'Fats', 'Carbs', 'Calories']
     ax.set_thetagrids(np.degrees(angles[:-1]), [])
     # Add labels with different colors
     # Add labels with different colors

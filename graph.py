@@ -33,7 +33,7 @@ def plot_individual_chart(nutrient, recommended_nutrient, average_nutrient, titl
 def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, color1, dates, individual=False):
     # Plot actual nutrient
     sns.lineplot(x='Days', y=nutrient, data=df, label=nutrient, linewidth=2.5, color=color1, ax=ax)
-    print(df[average_nutrient][0])
+    # print(df[average_nutrient][0])
     # Plot recommended nutrient
     sns.lineplot(x='Days', y=recommended_nutrient, data=df, label=recommended_nutrient, linestyle='dashed', linewidth=2.5, color=color1, ax=ax)
     
