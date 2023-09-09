@@ -12,8 +12,10 @@ def verify_csv_line(clipboard_content):
 def process_csv_from_clipboard(csv_file_path):
     # 1. Take what is on the clipboard
     clipboard_content = pyperclip.paste()
+    return process_csv(csv_file_path, clipboard_content)
+    
+def process_csv(csv_file_path, clipboard_content):
     print('Clipboard content:', clipboard_content)
-
     # 2. Verify the clipboard content
     if not verify_csv_line(clipboard_content):
         print("Clipboard content is not in the required CSV format.")

@@ -1,6 +1,10 @@
 import quart
 import quart_cors
 from quart import request, jsonify
+from utils import process_csv, read_nutrients, read_personal_info
+from constants import data_file_path, info_file_path
+from spider import spider
+from graph import graph
 
 app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
 # app = quart.Quart(__name__)
@@ -8,20 +12,28 @@ app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.c
 @app.post("/addNutrients")
 async def add_nutrients():
     csv_line = request.args.get("csv_line")
-    # TODO: Add the CSV line to nutrients.csv
+    process_csv(data_file_path, csv_line)
     return jsonify({"status": "success"}), 200
 
 @app.get("/generateGraph")
 async def generate_graph():
-    # TODO: Generate the graph and return its URL
-    return jsonify({"graph_url": "your_graph_url_here"}), 200
+    data = read_nutrients(data_file_path)
+    info = read_personal_info(info_file_path)
+    # chart(info, data)
+    graph(info, data)
+    spider(info, data)
+    return jsonify({"graph_url": "nutrients.png", "spider_url": "spider_charts.png"}), 200
 
 @app.post("/addAndGenerate")
 async def add_and_generate():
     csv_line = request.args.get("csv_line")
-    # TODO: Add the CSV line to nutrients.csv
-    # TODO: Generate the graph and return its URL
-    return jsonify({"graph_url": "your_graph_url_here"}), 200
+    process_csv(data_file_path, csv_line)
+    data = read_nutrients(data_file_path)
+    info = read_personal_info(info_file_path)
+    # chart(info, data)
+    graph(info, data)
+    spider(info, data)
+    return jsonify({"graph_url": "nutrients.png", "spider_url": "spider_charts.png"}), 200
 
 @app.get("/logo.png")
 async def plugin_logo():
