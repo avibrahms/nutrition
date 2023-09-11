@@ -1,7 +1,7 @@
 {
   "schema_version": "v1",
   "name_for_human": "Avi's nutrition graph",
-  "name_for_model": "Nutrition graph",
+  "name_for_model": "NutritionGraph",
   "description_for_model": "Avi's nutrition graph takes a comma-separated CSV line composed of a date, protein, fats, carbs, calories and outputs a graph of all the macronutrients intake since the user started recording his food intake.",
   "description_for_human": "Process and visualize macronutrient data from CSV input.",
   "auth": {
@@ -9,9 +9,9 @@
   },
   "api": {
     "type": "openapi",
-    "url": "http://localhost:5000/openapi.yaml"
+    "url": "http://localhost:5005/openapi.yaml"
   },
+  "logo_url": "http://localhost:5005/logo.png",
   "contact_email": "avi@ultradeeptech.com",
-  "legal_info_url": "https://ultradeeptech.com",
-  "logo_url": "logo.png"
+  "legal_info_url": "https://ultradeeptech.com"
 }

@@ -4,11 +4,12 @@ info:
   description: "Stores and displays the macronutrients consumed every day since inception."
   version: "1.0.0"
 servers:
-  - url: "http://localhost:5000"
+  - url: "http://localhost:5005"
 paths:
   /addNutrients:
     post:
       summary: "Add nutrients data"
+      operationId: "addNutrients"
       parameters:
         - name: "csv_line"
           in: "query"
@@ -22,6 +23,7 @@ paths:
   /generateGraph:
     get:
       summary: "Generate graph"
+      operationId: "generateGraph"
       responses:
         '200':
           description: "Successfully generated graph."
@@ -36,6 +38,7 @@ paths:
   /addAndGenerate:
     post:
       summary: "Add nutrients data and generate graph"
+      operationId: "addAndGenerate"
       parameters:
         - name: "csv_line"
           in: "query"

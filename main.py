@@ -2,11 +2,11 @@ import quart
 import quart_cors
 from quart import request, jsonify
 from utils import process_csv, read_nutrients, read_personal_info
-from constants import data_file_path, info_file_path
+from constants import data_file_path, info_file_path, HOST
 from spider import spider
 from graph import graph
 
-app = quart_cors.cors(quart.Quart(__name__), allow_origin="https://chat.openai.com")
+app = quart_cors.cors(quart.Quart(__name__), allow_origin=HOST)
 # app = quart.Quart(__name__)
 
 @app.post("/addNutrients")
@@ -22,7 +22,7 @@ async def generate_graph():
     # chart(info, data)
     graph(info, data)
     spider(info, data)
-    return jsonify({"graph_url": "nutrients.png", "spider_url": "spider_charts.png"}), 200
+    return jsonify({"graph_url": f"{HOST}/nutrients.png", "spider_url": f"{HOST}/spider_charts.png"}), 200
 
 @app.post("/addAndGenerate")
 async def add_and_generate():
@@ -33,7 +33,7 @@ async def add_and_generate():
     # chart(info, data)
     graph(info, data)
     spider(info, data)
-    return jsonify({"graph_url": "nutrients.png", "spider_url": "spider_charts.png"}), 200
+    return jsonify({"graph_url": f"{HOST}/nutrients.png", "spider_url": f"{HOST}/spider_charts.png"}), 200
 
 @app.get("/logo.png")
 async def plugin_logo():
@@ -42,16 +42,20 @@ async def plugin_logo():
 
 @app.get("/.well-known/ai-plugin.json")
 async def plugin_manifest():
-    # TODO: Serve your ai-plugin.json
-    return await quart.send_file("ai-plugin.json", mimetype="application/json")
+    host = request.headers['Host']
+    with open("./.well-known/ai-plugin.json") as f:
+        text = f.read()
+        return quart.Response(text, mimetype="text/json")
 
 @app.get("/openapi.yaml")
 async def openapi_spec():
-    # TODO: Serve your OpenAPI specification
-    return await quart.send_file("openapi.yaml", mimetype="text/yaml")
+    host = request.headers['Host']
+    with open("openapi.yaml") as f:
+        text = f.read()
+        return quart.Response(text, mimetype="text/yaml")
 
 def main():
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5005)
 
 if __name__ == "__main__":
     main()
