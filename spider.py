@@ -1,29 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from utils import calculate_recommended_values_v2, calculate_averages
+from utils import calculate_recommended_values_v2, calculate_averages, define_average_range
 
 def spider(info, data):
     
-    days = int(info.get('LastDaysAverage', 0))
-    if len(data) > 1:
-        if days <= 0:
-            n = None
-            m = None
-        elif days == 1:
-            n = -1
-            m = None
-        elif days > 1 and days < len(data):
-            n = -days - 1
-            m = -1
-        elif days >= len(data):
-            n = None
-            m = -1
-    elif len(data) <= 1:
-        n = None
-        m = None
-    
-    # print(n)
-    # print(m)
+    n, m = define_average_range(info, data)
     
     # Calculate recommended daily intake for each nutrient
     recommended_protein, recommended_fat, recommended_carbs, recommended_calories = calculate_recommended_values_v2(info)

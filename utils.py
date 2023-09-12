@@ -178,3 +178,24 @@ def calculate_recommended_values_v2(info):
 
     return recommended_proteins, recommended_fats, recommended_carbs, daily_calories
 
+def define_average_range(info, data):
+    
+    days = int(info.get('LastDaysAverage', 0))
+    if len(data) > 1:
+        if days <= 0:
+            n = None
+            m = None
+        elif days == 1:
+            n = -1
+            m = None
+        elif days > 1 and days < len(data):
+            n = -days - 1
+            m = -1
+        elif days >= len(data):
+            n = None
+            m = -1
+    elif len(data) <= 1:
+        n = None
+        m = None
+        
+    return n,m

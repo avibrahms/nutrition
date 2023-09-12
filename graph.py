@@ -4,7 +4,7 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
-from utils import calculate_recommended_values_v2, calculate_averages
+from utils import calculate_recommended_values_v2, calculate_averages, define_average_range
 
 def set_x_labels(ax, dates):
     num_days = len(dates)
@@ -90,11 +90,11 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
 def graph(info, df):
 
     df['Days'] = pd.to_datetime(df['Days'])
-
+    n, m = define_average_range(info, df)
     recommended_proteins, recommended_fats, recommended_carbs, recommended_calories = calculate_recommended_values_v2(info)
     
     # Calculate the average intake and divide by the recommended value
-    average_proteins, average_fats, average_carbs, average_calories = calculate_averages(df, recommended_proteins, recommended_fats, recommended_carbs, recommended_calories)
+    average_proteins, average_fats, average_carbs, average_calories = calculate_averages(df, recommended_proteins, recommended_fats, recommended_carbs, recommended_calories, n, m)
     
     num_days = len(df)
     df['Recommended Proteins'] = [recommended_proteins] * num_days
