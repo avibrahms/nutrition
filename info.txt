@@ -20,5 +20,5 @@ AdaptiveThermogenesis: 1
 #CarbohydratePercentageFromCalories: 25
 #FastingHours: 0
 
-LastDaysAverage: 7
+LastDaysAverage: 1
 AverageValues: 1

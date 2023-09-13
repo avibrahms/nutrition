@@ -82,7 +82,7 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
         # Add y-label for the average value
         average_value = int(round(df[average_nutrient].iloc[-1]))
         average_nb_days = len(df) if average_nb_days == 0 else average_nb_days
-        ax.text(max(0.05,1-average_nb_days/len(df)-0.05), average_value, f'{average_value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=10, weight='bold', bbox=dict(facecolor='black', edgecolor=color1, boxstyle='round,pad=0.2'))
+        ax.text(max(0.05,1-average_nb_days/len(df)-0.037), average_value, f'{average_value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=10, weight='bold', bbox=dict(facecolor='black', edgecolor=color1, boxstyle='round,pad=0.2'))
 
 
 def graph(info, df):
