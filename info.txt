@@ -5,14 +5,14 @@ Gender: Male
 
 WorkoutDays: 5
 
-WorkoutDifficulty: 0.6
+WorkoutDifficulty: 0.455
 ProteinFactor: 2
 FatFactor: 1
 CarbFactor: 3
 
 CalorieAdjustment: 0
 
-AdaptiveThermogenesis: 0
+AdaptiveThermogenesis: 1
 
 #FastingCalorieDiminishingPercent: 0
 #PAL: 1.55
@@ -20,5 +20,5 @@ AdaptiveThermogenesis: 0
 #CarbohydratePercentageFromCalories: 25
 #FastingHours: 0
 
-LastDaysAverage: 10
+LastDaysAverage: 7
 AverageValues: 1

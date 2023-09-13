@@ -15,10 +15,11 @@ def process_csv_from_clipboard(csv_file_path):
     return process_csv(csv_file_path, clipboard_content)
     
 def process_csv(csv_file_path, clipboard_content):
-    print('Clipboard content:', clipboard_content)
     # 2. Verify the clipboard content
     if not verify_csv_line(clipboard_content):
         print("Clipboard content is not in the required CSV format.")
+        print('Clipboard content:', clipboard_content)
+        print('Continuing without adding to CSV.')
         return
     
     # 3. Open the CSV file
@@ -181,21 +182,8 @@ def calculate_recommended_values_v2(info):
 def define_average_range(info, data):
     
     days = int(info.get('LastDaysAverage', 0))
-    if len(data) > 1:
-        if days <= 0:
-            n = None
-            m = None
-        elif days == 1:
-            n = -1
-            m = None
-        elif days > 1 and days < len(data):
-            n = -days - 1
-            m = -1
-        elif days >= len(data):
-            n = None
-            m = -1
-    elif len(data) <= 1:
-        n = None
-        m = None
-        
+    n = None
+    m = None
+    if len(data) > 1 and days > 0 and days < len(data):
+            n = -days    
     return n,m

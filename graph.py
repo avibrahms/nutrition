@@ -30,7 +30,7 @@ def plot_individual_chart(nutrient, recommended_nutrient, average_nutrient, titl
     plt.close()
 
 
-def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, color1, dates, individual=False):
+def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, color1, dates, individual=False, average_nb_days=0):
     # Plot actual nutrient
     sns.lineplot(x='Days', y=nutrient, data=df, label=nutrient, linewidth=2.5, color=color1, ax=ax)
     # print(df[average_nutrient][0])
@@ -46,7 +46,6 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
     ax.set_ylabel('Grams', color=color1)
     ax.set_xlabel('Days', color=color1)
     ax.tick_params(colors=color1)
-    
     
     # Legend settings
     if df[average_nutrient][0]:
@@ -82,7 +81,8 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
     if df[average_nutrient][0]:
         # Add y-label for the average value
         average_value = int(round(df[average_nutrient].iloc[-1]))
-        ax.text(0.05, average_value, f'{average_value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=10, weight='bold', bbox=dict(facecolor='black', edgecolor=color1, boxstyle='round,pad=0.2'))
+        average_nb_days = len(df) if average_nb_days == 0 else average_nb_days
+        ax.text(max(0.05,1-average_nb_days/len(df)-0.05), average_value, f'{average_value}', color=color1, backgroundcolor='#121212', transform=ax.get_yaxis_transform(), ha='left', va='center', fontsize=10, weight='bold', bbox=dict(facecolor='black', edgecolor=color1, boxstyle='round,pad=0.2'))
 
 
 
@@ -116,12 +116,12 @@ def graph(info, df):
     plt.rcParams['grid.color'] = '#404040'
 
     dates = df['Days'].dt.to_pydatetime()
-
-    fig, axes = plt.subplots(2, 2, figsize=(16, 9), dpi=300)
-    plot_chart(df, axes[0, 0], 'Proteins', 'Recommended Proteins', 'Average Proteins', r'$\bf{Protein}$' + f' Intake Over {num_days} Days', 'skyblue', dates)
-    plot_chart(df, axes[0, 1], 'Fats', 'Recommended Fats', 'Average Fats', r'$\bf{Fat}$' + f' Intake Over {num_days} Days', 'salmon', dates)
-    plot_chart(df, axes[1, 0], 'Carbs', 'Recommended Carbs', 'Average Carbs', r'$\bf{Carb}$' + f' Intake Over {num_days} Days', 'limegreen', dates)
-    plot_chart(df, axes[1, 1], 'Calories', 'Recommended Calories', 'Average Calories', r'$\bf{Calorie}$' + f' Intake Over {num_days} Days', 'gold', dates)
+    average_nb_days = int(info.get('LastDaysAverage', 0))
+    _, axes = plt.subplots(2, 2, figsize=(16, 9), dpi=300)
+    plot_chart(df, axes[0, 0], 'Proteins', 'Recommended Proteins', 'Average Proteins', r'$\bf{Protein}$' + f' Intake Over {num_days} Days', 'skyblue', dates, average_nb_days=average_nb_days)
+    plot_chart(df, axes[0, 1], 'Fats', 'Recommended Fats', 'Average Fats', r'$\bf{Fat}$' + f' Intake Over {num_days} Days', 'salmon', dates, average_nb_days=average_nb_days)
+    plot_chart(df, axes[1, 0], 'Carbs', 'Recommended Carbs', 'Average Carbs', r'$\bf{Carb}$' + f' Intake Over {num_days} Days', 'limegreen', dates, average_nb_days=average_nb_days)
+    plot_chart(df, axes[1, 1], 'Calories', 'Recommended Calories', 'Average Calories', r'$\bf{Calorie}$' + f' Intake Over {num_days} Days', 'gold', dates, average_nb_days=average_nb_days)
 
 
     plt.tight_layout()
