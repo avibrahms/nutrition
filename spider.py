@@ -14,7 +14,7 @@ def spider(info, data):
 
     # The data to plot
     data_to_plot = [average_protein, average_fat, average_carbs, average_calories]
-    data_to_plot_numbers = [average_protein*recommended_protein, average_fat*recommended_fat, average_carbs*recommended_carbs, average_calories*recommended_calories]
+    # data_to_plot_numbers = [average_protein*recommended_protein, average_fat*recommended_fat, average_carbs*recommended_carbs, average_calories*recommended_calories]
 
     # Number of variables we're plotting
     num_vars = len(data_to_plot)

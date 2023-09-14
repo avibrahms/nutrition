@@ -50,7 +50,8 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
     # Legend settings
     if df[average_nutrient][0]:
         space_above = 1.15 if individual else 1.3
-        values_to_display = [nutrient, recommended_nutrient, average_nutrient]
+        average_ratio = int(round(df[average_nutrient][0] / df[recommended_nutrient][0] * 100))
+        values_to_display = [nutrient, recommended_nutrient, average_nutrient + ' (' + str(average_ratio) + '% of recommended)']
     else:
         space_above = 1.3 if individual else 1.45
         values_to_display = [nutrient, recommended_nutrient]
