@@ -7,11 +7,11 @@
 
 # python3 "/Users/avi/Documents/personal code/nutrients/install.py"
 # pip install -r "/Users/avi/Documents/personal code/nutrients/requirements.txt"
-# Run the Python script
-python3 "/Users/avi/Documents/personal code/nutrients/draw.py"
-
 # Kill Preview if it's running
 pkill Preview
+
+# Run the Python script
+python3 "/Users/avi/Documents/personal code/nutrients/draw.py"
 
 # Display the images
 # open "/Users/avi/Documents/personal code/nutrients/nutrient_charts.png"
