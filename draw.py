@@ -7,4 +7,4 @@ data = read_nutrients('/Users/avi/Documents/personal code/nutrients/nutrients.cs
 info = read_personal_info('/Users/avi/Documents/personal code/nutrients/info.txt')
 # chart(info, data)
 graph(info, data)
-spider(info, data)
+# spider(info, data)
