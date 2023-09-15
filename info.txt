@@ -1,18 +1,18 @@
-Weight: 75
+Weight: 72
 Height: 182
 Age: 40
 Gender: Male
 
 WorkoutDays: 5
 
-WorkoutDifficulty: 0.455
+WorkoutDifficulty: 0.5
 ProteinFactor: 2
 FatFactor: 1
 CarbFactor: 3
 
 CalorieAdjustment: 0
 
-AdaptiveThermogenesis: 1
+AdaptiveThermogenesis: 0
 
 #FastingCalorieDiminishingPercent: 0
 #PAL: 1.55
@@ -20,5 +20,5 @@ AdaptiveThermogenesis: 1
 #CarbohydratePercentageFromCalories: 25
 #FastingHours: 0
 
-LastDaysAverage: 10
+LastDaysAverage: 8
 AverageValues: 1
