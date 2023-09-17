@@ -51,7 +51,8 @@ def plot_chart(df, ax, nutrient, recommended_nutrient, average_nutrient, title, 
     if df[average_nutrient][0]:
         space_above = 1.15 if individual else 1.3
         average_ratio = int(round(df[average_nutrient][0] / df[recommended_nutrient][0] * 100))
-        values_to_display = [nutrient, recommended_nutrient, average_nutrient + ' (' + str(average_nb_days) + 'd) - ' + str(average_ratio) + '%']
+        average_nb_days2 = len(df) if average_nb_days <= 0 else min(average_nb_days, len(df))
+        values_to_display = [nutrient, recommended_nutrient, average_nutrient + ' (' + str(average_nb_days2) + 'd) - ' + str(average_ratio) + '%']
     else:
         space_above = 1.3 if individual else 1.45
         values_to_display = [nutrient, recommended_nutrient]
