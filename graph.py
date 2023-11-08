@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 from utils import calculate_recommended_values_v2, calculate_averages, define_average_range
+from constants import *
 
 def set_x_labels(ax, dates):
     num_days = len(dates)
@@ -125,7 +126,7 @@ def graph(info, df):
 
 
     plt.tight_layout()
-    plt.savefig('/Users/avi/Documents/personal code/nutrients/nutrients.png', facecolor='#121212')
+    plt.savefig(graph_file_path, facecolor='#121212')
     plt.close()
     
 

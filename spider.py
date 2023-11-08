@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from utils import calculate_recommended_values_v2, calculate_averages, define_average_range
+from constants import *
 
 def spider(info, data):
     
@@ -102,5 +103,5 @@ def spider(info, data):
     fig.patch.set_facecolor('black')
 
     # Save the figure
-    plt.savefig('/Users/avi/Documents/personal code/nutrients/spider_charts.png', facecolor='black')
+    plt.savefig(graph_file_path, facecolor='black')
     plt.close()

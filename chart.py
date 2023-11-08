@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from utils import calculate_recommended_values_v2
-
+from constants import *
 
 def chart(info, data):
 
@@ -106,4 +106,4 @@ def chart(info, data):
     ax[1, 1].text(data['Days'].iloc[-1], data['Calories'].iloc[-1], f'{round(data["Calories"].iloc[-1])}', color=colors[3], weight='bold', ha='center', va='bottom')
 
     # Save the figure
-    plt.savefig('/Users/avi/Documents/personal code/nutrients/nutrient_charts.png', facecolor='black')
+    plt.savefig(chart_file_path, facecolor='black')
